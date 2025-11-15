@@ -1,207 +1,226 @@
-# Byte-compiled / optimized / DLL files
-__pycache__/
-*.py[codz]
-*$py.class
+# ==============================
+# Machine Learning Demo:
+# Supervised & Unsupervised Learning
+# ==============================
 
-# C extensions
-*.so
+import pandas as pd
+import matplotlib.pyplot as plt
 
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
+from sklearn.datasets import load_iris, load_digits
+from sklearn.model_selection import train_test_split
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import accuracy_score, mean_squared_error, r2_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
+from sklearn.cluster import KMeans
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+from tensorflow.keras.datasets import mnist
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py.cover
-.hypothesis/
-.pytest_cache/
-cover/
+# ---------------------------------
+# 1) Supervised Learning – Iris Dataset
+# ---------------------------------
 
-# Translations
-*.mo
-*.pot
+print("\n==============================")
+print(" 1) Supervised Learning – Iris")
+print("==============================\n")
 
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
+# Load Iris dataset
+iris = load_iris()
+X_iris = iris.data        # Features
+y_iris = iris.target      # Labels
 
-# Flask stuff:
-instance/
-.webassets-cache
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X_iris, y_iris, test_size=0.2, random_state=42
+)
 
-# Scrapy stuff:
-.scrapy
+# ---- KNN Model ----
+print("=== Iris – KNN Classifier ===")
+knn = KNeighborsClassifier(n_neighbors=3)
+knn.fit(X_train, y_train)
+y_pred_knn = knn.predict(X_test)
 
-# Sphinx documentation
-docs/_build/
+# Evaluation
+print("Accuracy:", accuracy_score(y_test, y_pred_knn))
+print("MSE:", mean_squared_error(y_test, y_pred_knn))
+print("R2:", r2_score(y_test, y_pred_knn))
+print()
 
-# PyBuilder
-.pybuilder/
-target/
+# ---- SVM Model ----
+print("=== Iris – SVM Classifier ===")
+svm_clf = SVC()
+svm_clf.fit(X_train, y_train)
+y_pred_svm = svm_clf.predict(X_test)
 
-# Jupyter Notebook
-.ipynb_checkpoints
+# Evaluation
+print("Accuracy:", accuracy_score(y_test, y_pred_svm))
+print("MSE:", mean_squared_error(y_test, y_pred_svm))
+print("R2:", r2_score(y_test, y_pred_svm))
+print()
 
-# IPython
-profile_default/
-ipython_config.py
+# ---- Logistic Regression ----
+print("=== Iris – Logistic Regression ===")
+log_reg = LogisticRegression(max_iter=1000)
+log_reg.fit(X_train, y_train)
+y_pred_log = log_reg.predict(X_test)
 
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
+# Evaluation
+print("Accuracy:", accuracy_score(y_test, y_pred_log))
+print("MSE:", mean_squared_error(y_test, y_pred_log))
+print("R2:", r2_score(y_test, y_pred_log))
+print()
 
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
 
-# UV
-#   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#uv.lock
+# ---------------------------------
+# 2) Supervised Learning – Digits Dataset
+# ---------------------------------
 
-# poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-#poetry.lock
-#poetry.toml
+print("\n==============================")
+print(" 2) Supervised Learning – Digits")
+print("==============================\n")
 
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#   pdm recommends including project-wide configuration in pdm.toml, but excluding .pdm-python.
-#   https://pdm-project.org/en/latest/usage/project/#working-with-version-control
-#pdm.lock
-#pdm.toml
-.pdm-python
-.pdm-build/
+# Load Digits dataset
+digits = load_digits()
+X_digits = digits.data
+y_digits = digits.target
 
-# pixi
-#   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
-#pixi.lock
-#   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
-#   in the .venv directory. It is recommended not to include this directory in version control.
-.pixi
+# Split data
+X_train_d, X_test_d, y_train_d, y_test_d = train_test_split(
+    X_digits, y_digits, test_size=0.3, random_state=42
+)
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
-__pypackages__/
+# ---- KNN Model ----
+print("=== Digits – KNN Classifier ===")
+digits_knn = KNeighborsClassifier(n_neighbors=3)
+digits_knn.fit(X_train_d, y_train_d)
+y_pred_digits = digits_knn.predict(X_test_d)
 
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
+# Evaluation
+print("Accuracy:", accuracy_score(y_test_d, y_pred_digits))
+print("MSE:", mean_squared_error(y_test_d, y_pred_digits))
+print("R2:", r2_score(y_test_d, y_pred_digits))
+print()
 
-# SageMath parsed files
-*.sage.py
+# Displaying a sample digit image
+plt.figure()
+plt.imshow(digits.images[3], cmap='gray')
+plt.title(f"Digits Sample - Label: {digits.target[3]}")
+plt.axis('off')
+plt.show()
 
-# Environments
-.env
-.envrc
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
 
-# Spyder project settings
-.spyderproject
-.spyproject
+# ---------------------------------
+# 3) MNIST Sample Visualization
+# ---------------------------------
 
-# Rope project settings
-.ropeproject
+print("\n==============================")
+print(" 3) MNIST Sample Visualization")
+print("==============================\n")
 
-# mkdocs documentation
-/site
+# Load MNIST dataset
+(X_train_m, y_train_m), (X_test_m, y_test_m) = mnist.load_data()
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
+# Display a sample image
+plt.figure()
+plt.imshow(X_train_m[4], cmap='gray')
+plt.title(f"MNIST Sample - Label: {y_train_m[4]}")
+plt.axis('off')
+plt.show()
 
-# Pyre type checker
-.pyre/
 
-# pytype static type analyzer
-.pytype/
+# ---------------------------------
+# 4) Unsupervised Learning – K-Means (Mall Customers)
+# ---------------------------------
 
-# Cython debug symbols
-cython_debug/
+print("\n==============================")
+print(" 4) Unsupervised Learning – K-Means")
+print("==============================\n")
 
-# PyCharm
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
+# Load Mall Customers dataset (CSV must be in same folder)
+mall = pd.read_csv("Mall_Customers.csv")
 
-# Abstra
-# Abstra is an AI-powered process automation framework.
-# Ignore directories containing user credentials, local state, and settings.
-# Learn more at https://abstra.io/docs
-.abstra/
+# Select features for clustering
+X_mall = mall[['Annual Income (k$)', 'Spending Score (1-100)']]
 
-# Visual Studio Code
-#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
-#  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
-#  you could uncomment the following to ignore the entire vscode folder
-# .vscode/
+# -------- Elbow Method --------
+inertia = []
+K_RANGE = range(1, 10)
 
-# Ruff stuff:
-.ruff_cache/
+for k in K_RANGE:
+    model = KMeans(n_clusters=k, random_state=42, n_init=10)
+    model.fit(X_mall)
+    inertia.append(model.inertia_)
 
-# PyPI configuration file
-.pypirc
+# Plot Elbow Curve
+plt.figure()
+plt.plot(K_RANGE, inertia, 'o-')
+plt.xlabel('Number of Clusters (k)')
+plt.ylabel('Inertia')
+plt.title('Elbow Method for Optimal k')
+plt.show()
 
-# Cursor
-#  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
-#  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
-#  refer to https://docs.cursor.com/context/ignore-files
-.cursorignore
-.cursorindexingignore
+# Choose k = 5 for clustering
+k = 5
+kmeans = KMeans(n_clusters=k, random_state=42, n_init=10)
+mall['cluster'] = kmeans.fit_predict(X_mall)
 
-# Marimo
-marimo/_static/
-marimo/_lsp/
-__marimo__/
+# Create DataFrame for cluster centers
+centers = pd.DataFrame(
+    kmeans.cluster_centers_,
+    columns=['Annual Income (k$)', 'Spending Score (1-100)']
+)
+centers['cluster'] = range(k)
+
+# Compute medians for cluster interpretation
+income_med = mall['Annual Income (k$)'].median()
+score_med = mall['Spending Score (1-100)'].median()
+
+# Function to interpret each cluster
+def get_meaning(income, score):
+    if income >= income_med and score >= score_med:
+        return "High Income – High Spending"
+    elif income >= income_med and score < score_med:
+        return "High Income – Low Spending"
+    elif income < income_med and score >= score_med:
+        return "Low Income – High Spending"
+    else:
+        return "Low Income – Low Spending"
+
+# Add meaning column
+centers['meaning'] = centers.apply(
+    lambda row: get_meaning(row['Annual Income (k$)'], row['Spending Score (1-100)']),
+    axis=1
+)
+
+print("=== Cluster Centers with Meaning ===")
+print(centers)
+print()
+
+# -------- Plot Clusters --------
+plt.figure(figsize=(8, 6))
+
+for idx, info in centers.iterrows():
+    cluster_points = mall[mall['cluster'] == info['cluster']]
+    plt.scatter(
+        cluster_points['Annual Income (k$)'],
+        cluster_points['Spending Score (1-100)'],
+        s=70,
+        label=f"Cluster {info['cluster']}: {info['meaning']}"
+    )
+
+# Plot centroids
+plt.scatter(
+    centers['Annual Income (k$)'],
+    centers['Spending Score (1-100)'],
+    s=150,
+    c='red',
+    marker='X',
+    label='Centroids'
+)
+
+plt.xlabel('Annual Income (k$)')
+plt.ylabel('Spending Score (1-100)')
+plt.title('Customer Segmentation (K-Means Clustering)')
+plt.legend()
+plt.show()
